@@ -1,0 +1,7 @@
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_WEBapi.Tests
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\bin\Debug\net9.0\CoverletSourceRootsMapping_WEBapi.Tests
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\obj\Debug\net9.0\WEBapi.Tests.csproj.AssemblyReference.cache
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\obj\Debug\net9.0\WEBapi.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\obj\Debug\net9.0\WEBapi.Tests.AssemblyInfoInputs.cache
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\obj\Debug\net9.0\WEBapi.Tests.AssemblyInfo.cs
+C:\Users\thoma\OneDrive\Documents\Projetos\WEBapi.Tests\obj\Debug\net9.0\WEBapi.Tests.csproj.CoreCompileInputs.cache
