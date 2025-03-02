@@ -10,24 +10,25 @@ namespace WEBapi.Tests.Controllers
 {
     public class TodoControllerTests
     {
-        private readonly Mock<ITodoService> _mockTodoService;
-        private readonly TodoController _controller;
+        private DbContextOptions<DataContext> _options;
+        public DataContext _dataContext;
 
         public TodoControllerTests()
         {
-            _mockTodoService = new Mock<ITodoService>();
-            _controller = new TodoController(_mockTodoService.Object);
+            _options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;;
+            _dataContext = new DataContext(_options);
         }
 
         [Fact]
         public void GetAll_ShouldReturnOkWithTodoItems()
         {
             // Arrange
-            var todoItems = new List<TodoItem> { new TodoItem { Id = 1, Title = "Test" } };
-            _mockTodoService.Setup(service => service.GetAll()).Returns(todoItems);
+            var todoItems = new List<TodoItem> { new TodoItem { Title = "Test" } };
 
             // Act
-            var result = _controller.GetAll();
+            var result = _dataContext.GetAll();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
