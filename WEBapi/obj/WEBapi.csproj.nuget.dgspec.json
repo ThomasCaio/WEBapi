@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\WEBapi.csproj": {}
+    "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/WEBapi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\WEBapi.csproj": {
+    "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/WEBapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\WEBapi.csproj",
+        "projectUniqueName": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/WEBapi.csproj",
         "projectName": "WEBapi",
-        "projectPath": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\WEBapi.csproj",
-        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\obj\\",
+        "projectPath": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/WEBapi.csproj",
+        "packagesPath": "/home/thomas/.nuget/packages/",
+        "outputPath": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/thomas/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -36,9 +36,9 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -92,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-rc.1.24452.12/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

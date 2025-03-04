@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WEBapi.Models;
 using WEBapi.Context;
+using WEBapi.Services;
 namespace WEBapi.Controllers;
 
 
@@ -8,26 +9,25 @@ namespace WEBapi.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly DataContext DbContext;
+    private readonly IDataService<User> _dataService;
 
-    public UserController(DataContext context)
+    public UserController(IDataService<User> dataService)
     {
-        DbContext = context;
+        _dataService = dataService;
     }
 
 
     [HttpPost()]
     public IActionResult Post(User request)
     {
-        DbContext.Users.Add(request);
-        DbContext.SaveChanges();
+        _dataService.Add(request);
         return Ok();
     }
 
     [HttpGet()]
     public IActionResult Get()
     {
-        var result = DbContext.Users.ToList();
+        var result = _dataService.GetAll();
         return Ok(result);
     }
 }

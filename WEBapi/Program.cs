@@ -2,6 +2,7 @@ using WEBapi.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
 using WEBapi.Services;
+using WEBapi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddScoped<IDataService<User>, DataService<User>>();
+builder.Services.AddScoped<IDataService<TodoItem>, DataService<TodoItem>>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

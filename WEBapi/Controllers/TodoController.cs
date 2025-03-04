@@ -9,24 +9,24 @@ namespace WEBapi.Controllers
     [Route("api/[controller]")]
     public class TodoController : ControllerBase
     {
-        private readonly ITodoService _todoService;
+        private readonly IDataService<TodoItem> _dataService;
 
-        public TodoController(ITodoService todoService)
+        public TodoController(IDataService<TodoItem> dataService)
         {
-            _todoService = todoService;
+            _dataService = dataService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var items = _todoService.GetAll();
+            var items = _dataService.GetAll();
             return Ok(items);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var item = _todoService.GetById(id);
+            var item = _dataService.GetById(id);
             if (item == null)
             {
                 return NotFound();
@@ -37,7 +37,7 @@ namespace WEBapi.Controllers
         [HttpPost]
         public IActionResult Add(TodoItem item)
         {
-            var newItem = _todoService.Add(item);
+            var newItem = _dataService.Add(item);
             return CreatedAtAction(nameof(GetById), new { id = newItem.Id }, newItem);
         }
 
@@ -49,14 +49,14 @@ namespace WEBapi.Controllers
                 return BadRequest();
             }
 
-            _todoService.Update(item);
+            _dataService.Update(item);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _todoService.Delete(id);
+            _dataService.Delete(id);
             return NoContent();
         }
     }
