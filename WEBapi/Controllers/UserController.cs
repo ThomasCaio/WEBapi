@@ -30,4 +30,15 @@ public class UserController : ControllerBase
         var result = _dataService.GetAll();
         return Ok(result);
     }
+
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        var result = _dataService.GetById(id);
+        if (result == null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
 }

@@ -34,7 +34,7 @@ namespace WEBapi.Tests
             _service.Add(item);
 
             // Assert
-            var addedItem = _dataContext.TodoItems.FirstOrDefault(i => i.Title == "Test Add_ShouldAddTodoItem");
+            var addedItem = _service.GetById(item.Id);
             Assert.NotNull(addedItem);
             Assert.Equal("Test Add_ShouldAddTodoItem", addedItem.Title);
             Assert.False(addedItem.IsCompleted);

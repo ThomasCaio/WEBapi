@@ -6,6 +6,7 @@ using WEBapi.Models;
 using Xunit;
 using System.Linq;
 using WEBapi.Services;
+using Castle.Components.DictionaryAdapter.Xml;
 
 namespace WEBapi.Tests.Controllers
 {
@@ -30,7 +31,7 @@ namespace WEBapi.Tests.Controllers
         public void Post_ValidUser_ReturnsOk()
         {
             // Arrange
-            var user = new User { Name = "Test User" };
+            var user = new User { Name = "Test Post_ValidUser_ReturnsOk" };
 
             // Act
             var result = _controller.Post(user);
@@ -38,7 +39,11 @@ namespace WEBapi.Tests.Controllers
             // Assert
             Assert.IsType<OkResult>(result);
             Assert.Single(_dataContext.Users);
-            Assert.Equal("Test User", _dataContext.Users.First().Name);
+
+            //Verifica se o usuário foi realmente adicionado.
+            var addedUser = _dataContext.Users.FirstOrDefault(u => u.Name == "Test Post_ValidUser_ReturnsOk");
+            Assert.NotNull(addedUser);
+            Assert.Equal("Test Post_ValidUser_ReturnsOk", addedUser.Name);
         }
 
         [Fact]

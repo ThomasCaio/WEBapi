@@ -170,3 +170,8 @@ C:/Users/thoma/OneDrive/Documents/Projetos/WEBapi/obj/Debug/net9.0/ref/WEBapi.dl
 /home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/obj/Debug/net9.0/WEBapi.pdb
 /home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/obj/Debug/net9.0/WEBapi.genruntimeconfig.cache
 /home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/obj/Debug/net9.0/ref/WEBapi.dll
+/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/bin/Debug/net9.0/Microsoft.Extensions.DependencyModel.dll
+/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/bin/Debug/net9.0/Scrutor.dll
+/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/bin/Debug/net9.0/Swashbuckle.AspNetCore.Filters.dll
+/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/bin/Debug/net9.0/Swashbuckle.AspNetCore.Filters.Abstractions.dll
