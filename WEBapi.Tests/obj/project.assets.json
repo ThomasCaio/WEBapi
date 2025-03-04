@@ -4319,19 +4319,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thoma\\.nuget\\packages\\": {}
+    "/home/thomas/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi.Tests\\WEBapi.Tests.csproj",
+      "projectUniqueName": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi.Tests/WEBapi.Tests.csproj",
       "projectName": "WEBapi.Tests",
-      "projectPath": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi.Tests\\WEBapi.Tests.csproj",
-      "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi.Tests\\obj\\",
+      "projectPath": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi.Tests/WEBapi.Tests.csproj",
+      "packagesPath": "/home/thomas/.nuget/packages/",
+      "outputPath": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/thomas/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -4343,8 +4343,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\WEBapi.csproj": {
-              "projectPath": "C:\\Users\\thoma\\OneDrive\\Documents\\Projetos\\WEBapi\\WEBapi.csproj"
+            "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/WEBapi.csproj": {
+              "projectPath": "/home/thomas/Documentos/Projects/C#/WEBapi/WEBapi/WEBapi.csproj"
             }
           }
         }
@@ -4357,9 +4357,9 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net9.0": {
@@ -4402,7 +4402,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-rc.1.24452.12/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

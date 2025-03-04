@@ -1,5 +1,4 @@
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEBapi.Models;
 using WEBapi.Services;
@@ -11,100 +10,85 @@ namespace WEBapi.Tests
     public class TodoServiceTests
     {
         private DbContextOptions<DataContext> _options;
-        public DataContext _dataContext;
+        private DataContext _dataContext;
+        private DataService<TodoItem> _service;
 
         public TodoServiceTests()
         {
             _options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;;
+                .Options;
             _dataContext = new DataContext(_options);
+            _dataContext.Database.EnsureDeleted();
+            _dataContext.Database.EnsureCreated();
+            _service = new DataService<TodoItem>(_dataContext);
         }
-    
+
         [Fact]
         public void Add_ShouldAddTodoItem()
         {
             // Arrange
-            using (_dataContext)
-            {
-                TodoItem item = new TodoItem { Title = "Test Item", IsCompleted = false };
+            TodoItem item = new TodoItem { Title = "Test Add_ShouldAddTodoItem", IsCompleted = false };
 
-                // Act
-                _dataContext.TodoItems.Add(item);
-                _dataContext.SaveChanges();
+            // Act
+            _service.Add(item);
 
-                // Assert
-                var addedItem = _dataContext.TodoItems.FirstOrDefault(i => i.Title == "Test Item");
-                Assert.NotNull(addedItem);
-                Assert.Equal("Test Item", addedItem.Title);
-                Assert.False(addedItem.IsCompleted);
-                Assert.Equal(1, addedItem.Id);
-            }
+            // Assert
+            var addedItem = _dataContext.TodoItems.FirstOrDefault(i => i.Title == "Test Add_ShouldAddTodoItem");
+            Assert.NotNull(addedItem);
+            Assert.Equal("Test Add_ShouldAddTodoItem", addedItem.Title);
+            Assert.False(addedItem.IsCompleted);
+            Assert.Equal(1, addedItem.Id);
         }
 
         [Fact]
         public void GetById_ShouldReturnCorrectItem()
         {
             // Arrange
-            using (_dataContext)
-            {
-                var service = new TodoService(_dataContext);
-                var item = new TodoItem { Title = "Test Correct Item ID", IsCompleted = false };
-                _dataContext.TodoItems.Add(item);
-                _dataContext.SaveChanges();
+            var item = new TodoItem { Title = "Test Correct Item ID", IsCompleted = false };
+            _service.Add(item);
 
-                // Act
-                var foundItem = service.GetById(item.Id);
+            // Act
+            var foundItem = _service.GetById(item.Id);
 
-                // Assert
-                Assert.NotNull(foundItem);
-                Assert.Equal("Test Correct Item ID", foundItem.Title);
-            }
+            // Assert
+            Assert.NotNull(foundItem);
+            Assert.Equal("Test Correct Item ID", foundItem.Title);
         }
 
         [Fact]
         public void Update_ShouldModifyExistingItem()
         {
             // Arrange
-            using (_dataContext)
-            {
-                var service = new TodoService(_dataContext);
-                var item = new TodoItem { Title = "Test Item", IsCompleted = false };
-                _dataContext.TodoItems.Add(item);
-                _dataContext.SaveChanges();
+            var item = new TodoItem { Title = "Test Item", IsCompleted = false };
+            _service.Add(item);
 
-                item.Title = "Updated Item";
-                item.IsCompleted = true;
+            item.Title = "Updated Item";
+            item.IsCompleted = true;
 
-                // Act
-                _dataContext.Update(item);
-                var foundItem = service.GetById(item.Id);
+            // Act
+            _service.Update(item);
 
-                // Assert
-                Assert.NotNull(foundItem);
-                Assert.Equal("Updated Item", foundItem.Title);
-                Assert.True(foundItem.IsCompleted);
-            }
+            // Assert
+            var foundItem = _service.GetById(item.Id);
+            Assert.NotNull(foundItem);
+            Assert.Equal("Updated Item", foundItem.Title);
+            Assert.True(foundItem.IsCompleted);
         }
 
         [Fact]
         public void Delete_ShouldRemoveItem()
         {
             // Arrange
-            using (_dataContext)
-            {
-                var service = new TodoService(_dataContext);
-                var item = new TodoItem { Title = "Test Item", IsCompleted = false };
-                _dataContext.TodoItems.Add(item);
-                _dataContext.SaveChanges();
+            var item = new TodoItem { Title = "Test Item", IsCompleted = false };
+            _service.Add(item);
 
-                // Act
-                service.Delete(1);
-                var foundItem = service.GetById(1);
+            // Act
+            _service.Delete(item.Id);
 
-                // Assert
-                Assert.Null(foundItem);
-            }
+            // Assert
+            var foundItem = _service.GetById(item.Id);
+            Assert.Null(foundItem);
         }
     }
 }
