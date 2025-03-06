@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WEBapi.Models;
-using WEBapi.Context;
-using Microsoft.AspNetCore.Authorization;
+using WEBapi.Services;
+
 namespace WEBapi.Controllers;
 
 public class LoginRequest
@@ -15,33 +15,33 @@ public class LoginRequest
 public class AuthController : ControllerBase
 {
     private readonly JwtService _jwtService;
-    private readonly DataContext _dataContext;
+    private readonly IDataService<User> _dataService;
 
-    public AuthController(JwtService _, DataContext __)
+    public AuthController(JwtService _, IDataService<User> __)
     {
         _jwtService = _;
-        _dataContext = __;
+        _dataService = __;
     }
 
 
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        // Valide as credenciais do usuário (exemplo simplificado)
-        if (request.Username == "string" && request.Password == "string")
+        try
         {
+            var existingUser = _dataService.GetAll().FirstOrDefault(u => u.Username == request.Username && u.Password == request.Password);
+
+            if (existingUser == null)
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
             var token = _jwtService.GenerateToken(request.Username, "Admin");
             return Ok(new { Token = $"bearer {token}" });
         }
-
-        return Unauthorized();
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpGet("admin-only")]
-    public IActionResult ListAllUsers()
-    {
-        var result = _dataContext.Users.ToList();
-        return Ok(result);
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 }
