@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WEBapi.Models;
 using WEBapi.Services;
-// using WEBapi.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace WEBapi.Controllers
 {
@@ -19,45 +19,93 @@ namespace WEBapi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var items = _dataService.GetAll();
-            return Ok(items);
+            try
+            {
+                var items = _dataService.GetAll();
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var item = _dataService.GetById(id);
-            if (item == null)
+            try
             {
-                return NotFound();
+                var item = _dataService.GetById(id);
+                if (item == null)
+                {
+                    return NotFound();
+                }
+                return Ok(item);
             }
-            return Ok(item);
+            catch (Exception ex)
+            {
+                // Log the exception here
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost]
         public IActionResult Add(TodoItem item)
         {
-            var newItem = _dataService.Add(item);
-            return CreatedAtAction(nameof(GetById), new { id = newItem.Id }, newItem);
+            try
+            {
+                var newItem = _dataService.Add(item);
+                return CreatedAtAction(nameof(GetById), new { id = newItem.Id }, newItem);
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Database error: {ex.InnerException?.Message ?? ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, TodoItem item)
         {
-            if (id != item.Id)
+            try
             {
-                return BadRequest();
-            }
+                if (id != item.Id)
+                {
+                    return BadRequest();
+                }
 
-            _dataService.Update(item);
-            return NoContent();
+                _dataService.Update(item);
+                return NoContent();
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Database error: {ex.InnerException?.Message ?? ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _dataService.Delete(id);
-            return NoContent();
+            try
+            {
+                _dataService.Delete(id);
+                return NoContent();
+            }
+             catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Database error: {ex.InnerException?.Message ?? ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

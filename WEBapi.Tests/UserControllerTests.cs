@@ -1,79 +1,100 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WEBapi.Context;
+﻿using Xunit;
+using Moq;
 using WEBapi.Controllers;
-using WEBapi.Models;
-using Xunit;
-using System.Linq;
 using WEBapi.Services;
-using Castle.Components.DictionaryAdapter.Xml;
+using WEBapi.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace WEBapi.Tests.Controllers
 {
     public class UserControllerTests
     {
-        private DbContextOptions<DataContext> _options;
-        private DataContext _dataContext;
-        private UserController _controller;
-
-        public UserControllerTests()
-        {
-            _options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-            _dataContext = new DataContext(_options);
-            _dataContext.Database.EnsureDeleted();
-            _dataContext.Database.EnsureCreated();
-            _controller = new UserController(new DataService<User>(_dataContext));
-        }
-
         [Fact]
-        public void Post_ValidUser_ReturnsOk()
+        public void Register_ValidUser_ReturnsOk()
         {
             // Arrange
-            var user = new User { Name = "Test Post_ValidUser_ReturnsOk" };
+            var dataServiceMock = new Mock<IDataService<User>>();
+            var controller = new UserController(dataServiceMock.Object);
+            var user = new User { Username = "TestUser" };
+
+            dataServiceMock.Setup(service => service.GetAll()).Returns(new List<User>());
+            dataServiceMock.Setup(service => service.Add(user));
 
             // Act
-            var result = _controller.Post(user);
+            var result = controller.Register(user) as OkObjectResult;
 
             // Assert
-            Assert.IsType<OkResult>(result);
-            Assert.Single(_dataContext.Users);
-
-            //Verifica se o usuário foi realmente adicionado.
-            var addedUser = _dataContext.Users.FirstOrDefault(u => u.Name == "Test Post_ValidUser_ReturnsOk");
-            Assert.NotNull(addedUser);
-            Assert.Equal("Test Post_ValidUser_ReturnsOk", addedUser.Name);
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Equal("User registered successfully.", result.Value);
+            dataServiceMock.Verify(service => service.Add(user), Times.Once);
         }
 
         [Fact]
-        public void Get_UsersExist_ReturnsListOfUsers()
+        public void Register_ExistingUsername_ReturnsBadRequest()
         {
             // Arrange
-            var user1 = new User { Name = "User 1" };
-            var user2 = new User { Name = "User 2" };
-            _controller.Post(user1);
-            _controller.Post(user2);
+            var dataServiceMock = new Mock<IDataService<User>>();
+            var controller = new UserController(dataServiceMock.Object);
+            var user = new User { Username = "ExistingUser" };
+            var existingUsers = new List<User> { new User { Username = "ExistingUser" } };
+
+            dataServiceMock.Setup(service => service.GetAll()).Returns(existingUsers);
 
             // Act
-            var result = _controller.Get();
+            var result = controller.Register(user) as BadRequestObjectResult;
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var users = Assert.IsAssignableFrom<IEnumerable<User>>(okResult.Value);
-            Assert.Equal(2, users.Count());
+            Assert.NotNull(result);
+            Assert.Equal(400, result.StatusCode);
+            Assert.Equal("Username already exists.", result.Value);
+            dataServiceMock.Verify(service => service.Add(user), Times.Never);
         }
 
         [Fact]
-        public void Get_NoUsersExist_ReturnsEmptyList()
+        public void Register_DbUpdateException_ReturnsInternalServerError()
         {
+            // Arrange
+            var dataServiceMock = new Mock<IDataService<User>>();
+            var controller = new UserController(dataServiceMock.Object);
+            var user = new User { Username = "TestUser" };
+
+            dataServiceMock.Setup(service => service.GetAll()).Returns(new List<User>());
+            dataServiceMock.Setup(service => service.Add(user)).Throws(new DbUpdateException("Test Exception", new Exception()));
+
             // Act
-            var result = _controller.Get();
+            var result = controller.Register(user) as ObjectResult;
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var users = Assert.IsAssignableFrom<IEnumerable<User>>(okResult.Value);
-            Assert.Empty(users);
+            Assert.NotNull(result);
+            Assert.Equal(500, result.StatusCode);
+            Assert.Contains("Database error:", result.Value.ToString());
+            dataServiceMock.Verify(service => service.Add(user), Times.Once);
+        }
+
+        [Fact]
+        public void Register_GenericException_ReturnsInternalServerError()
+        {
+            // Arrange
+            var dataServiceMock = new Mock<IDataService<User>>();
+            var controller = new UserController(dataServiceMock.Object);
+            var user = new User { Username = "TestUser" };
+
+            dataServiceMock.Setup(service => service.GetAll()).Returns(new List<User>());
+            dataServiceMock.Setup(service => service.Add(user)).Throws(new Exception("Test Exception"));
+
+            // Act
+            var result = controller.Register(user) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(500, result.StatusCode);
+            Assert.Contains("Internal server error:", result.Value.ToString());
+            dataServiceMock.Verify(service => service.Add(user), Times.Once);
         }
     }
 }
