@@ -14,7 +14,7 @@ public class JwtServiceTests
     {
         // Arrange
         var configuration = new Mock<IConfiguration>();
-        configuration.Setup(c => c["Jwt:Key"]).Returns("A2F6Y2Q4NzEtNjY3Zi00ZWEyLTk5ZmItYjY2YmI5N2E2ZTY2"); // Substitua por uma chave válida
+        configuration.Setup(c => c["Jwt:Key"]).Returns("A2F6Y2Q4NzEtNjY3Zi00ZWEyLTk5ZmItYjY2YmI5N2E2ZTY2");
         configuration.Setup(c => c["Jwt:Issuer"]).Returns("TestIssuer");
         configuration.Setup(c => c["Jwt:Audience"]).Returns("TestAudience");
 
